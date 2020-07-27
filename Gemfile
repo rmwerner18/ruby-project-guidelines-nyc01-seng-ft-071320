@@ -2,6 +2,8 @@
 source "https://rubygems.org"
 
 gem "sinatra-activerecord"
+gem "activerecord"
+gem "rake"
+gem "require_all"
 gem "sqlite3"
 gem "pry"
-gem "require_all"
