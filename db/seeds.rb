@@ -1,8 +1,9 @@
 require 'rest-client'
 require 'json'
 require 'pry'
+require 'dotenv/load'
 
-api_data = RestClient.get("https://app.ticketmaster.com/discovery/v2/events.json?apikey=SsbAwQfGOGoLOyWoKzWrGDhTyUWemYzo")
+api_data = RestClient.get(api)
 event_data = JSON.parse(api_data)
 
 
