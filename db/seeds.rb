@@ -17,13 +17,26 @@ event_by_date = event_data["_embedded"]["events"].select do |event_hash|
     event_hash["dates"]["start"]["localDate"] == "2021-10-23"
 end
 
-name = event_by_date.map do |hash|
+event_by_state = event_data["_embedded"]["events"].select do |event_hash|
+    event_hash["_embedded"]["venues"][0]["state"]["name"] == "New Jersey"
+end
+
+names_by_date = event_by_date.map do |hash|
     [
         hash["name"], 
         hash["type"],
         hash["url"],
         hash["priceRanges"][0]["min"]
 ]
+end
+
+names_by_state = event_by_state.map do |hash|
+    [
+        hash["name"], 
+        hash["type"],
+        hash["url"],
+        hash["priceRanges"][0]["min"]
+    ]
 end
 
 binding.pry
