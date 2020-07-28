@@ -1,8 +1,11 @@
+require_relative '../config/environment'
 require 'rest-client'
 require 'json'
 require 'pry'
 
-api_data = RestClient.get("https://app.ticketmaster.com/discovery/v2/events.json?apikey=SsbAwQfGOGoLOyWoKzWrGDhTyUWemYzo")
+a = ENV["data"]
+binding.pry
+api_data = RestClient.get(a)
 event_data = JSON.parse(api_data)
 
 
