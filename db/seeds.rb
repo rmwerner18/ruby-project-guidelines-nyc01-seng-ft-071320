@@ -9,22 +9,39 @@ User.delete_all
 EventUser.delete_all
 Venue.delete_all
 
+b = ENV["venue_data"]
+
+venue_api_data = RestClient.get(b)
+venue_info = JSON.parse(venue_api_data)
+
+venue_narrowed_search = venue_info["_embedded"]["venues"].each do |venue_array|
+    Venue.create(name: venue_array["name"],
+                city: venue_array["city"]["name"],
+                address: venue_array["address"]["line1"])
+end
+
+
+
+
+
 a = ENV["data"]
 
 api_data = RestClient.get(a)
 event_data = JSON.parse(api_data)
 
 narrowed_search = event_data["_embedded"]["events"].select do |event_hash|
-    event_hash["name"] == "New York Mets vs. New York Yankees" && event_hash["_embedded"]["venues"][0]["city"]["name"] == "Flushing" 
+    (event_hash["_embedded"]["venues"][0]["city"]["name"] == "Flushing") 
 end
 
 narrowed_search.each do |event_hash|
     event = Event.create(name: event_hash["name"], 
-        date_time: event_hash["dates"]["start"]["localDate"],
-        genre: event_hash["classifications"][0]["genre"]["name"])
+        date: event_hash["dates"]["start"]["localDate"],
+        genre: event_hash["classifications"][0]["genre"]["name"],
+        city: event_hash["_embedded"]["venues"][0]["city"]["name"],
+        venue_id: Venue.find_by(name: event_hash["_embedded"]["venues"][0]["name"]).id)
     end
 
-binding.pry
+    # venue_id: ... name: event_hash["_embedded"]["venues"]["name"]).id
 
 # event_by_date = event_data["_embedded"]["events"].select do |event_hash|
 #     event_hash["dates"]["start"]["localDate"] == date
@@ -59,6 +76,11 @@ end
 
 # binding.pry
 # "something"
+
+################################################################################
+
+
+
 
 
 
