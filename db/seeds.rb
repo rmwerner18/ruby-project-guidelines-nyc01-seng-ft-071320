@@ -15,7 +15,7 @@ api_data = RestClient.get(a)
 event_data = JSON.parse(api_data)
 
 narrowed_search = event_data["_embedded"]["events"].select do |event_hash|
-    event_hash["name"] == "New York Mets vs. New York Yankees" && event_hash["_embedded"]["venues"][0]["city"]["name"] = "Flushing" 
+    event_hash["name"] == "New York Mets vs. New York Yankees" && event_hash["_embedded"]["venues"][0]["city"]["name"] == "Flushing" 
 end
 
 narrowed_search.each do |event_hash|
