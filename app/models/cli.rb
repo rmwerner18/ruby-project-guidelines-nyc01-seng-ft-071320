@@ -9,7 +9,9 @@ class CLI
             if response == "yes"
                 puts "Please specify a city"
                 city = gets.chomp
-                event = Event.find_by_city(city)
+                puts "Please sepcify a date (yyyy-mm-dd)"
+                date = gets.chomp
+                events = Event.find_by_city(city, date)
                 binding.pry
             end
 
