@@ -29,12 +29,30 @@ karan_api_key = ENV["karans_api"]
 api_data = RestClient.get(a)
 event_data = JSON.parse(api_data)
 
-events = event_data["_embedded"]["events"].select do |event|
-event["dates"]["start"]["localDate"] == "2021-09-10" && event["_embedded"]["venues"][0]["city"]["name"] == "Flushing"
+count = 0 
+while Event.all.length < 900 do
+    event_data["_embedded"]["events"].each do |event|
+    Event.create(name: event["name"],
+    date: event["dates"]["start"]["localDate"],
+    # genre: event["classifications"][0]["genre"]["name"],
+    city: event["_embedded"]["venues"][0]["city"]["name"])
+    # venue_id: Venue.find_by(name: event["_embedded"]["venues"][0]["name"]).id)
+    end
+    event_data = JSON.parse(RestClient.get("https://app.ticketmaster.com/discovery/v2/events?countryCode=US&stateCode=NY&dmaId=345&&size=20&page=#{count}&locale=*" + "#{karan_api_key}"))
+    count += 1
 end
-binding.pry
 
-# while event_data
+
+# next_one = event_data["_links"]["next"]["href"]
+
+# request = "https://app.ticketmaster.com" + "#{event_data["_links"]["next"]["href"]}" + "#{karan_api_key}"
+
+
+
+
+    # event_data = event_data["_links"]["next"]["href"] ? JSON.parse(RestClient.get("https://app.ticketmaster.com" + "#{event_data["_links"]["next"]["href"]}" + "#{karan_api_key}")) : nil
+
+
 
 #     event_data = event_data["_links"]["next"]["href"] ? JSON.parse(RestClient.get("https://app.ticketmaster.com" + "#{event_data["_links"]["next"]["href"]}" + "#{karan_api_key}")) : nil
 # end

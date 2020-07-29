@@ -64,7 +64,8 @@ class User < ActiveRecord::Base
     def self.show_choices
         puts "What would you like to do? (enter number)"
         puts "1: Search events by city and date"
-        puts "2: View MyEvents"
+        puts "2: Search events by city and name"
+        puts "3: View MyEvents"
         puts "9999: Exit"
     end
 end

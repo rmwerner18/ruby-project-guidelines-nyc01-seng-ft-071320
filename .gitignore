@@ -10,7 +10,7 @@ tmp
 *.log
 *.swp
 
-db/*.db
 
 .env
 
+db/*.db
