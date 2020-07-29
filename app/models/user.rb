@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
         action = gets.chomp
         puts "What is your first name?"
         first_name = gets.chomp
-        puts "what is your last name?"
+        puts "What is your last name?"
         last_name = gets.chomp
         puts "What is your password"
         password = gets.chomp

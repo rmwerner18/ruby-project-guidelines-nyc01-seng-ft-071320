@@ -14,6 +14,7 @@ class Event < ActiveRecord::Base
             city = gets.chomp
         puts "Please specify a date (yyyy-mm-dd)"
             date = gets.chomp
-        Event.find_by_city(city, date)
+        event = Event.find_by_city(city, date)
+        p event
     end
 end
