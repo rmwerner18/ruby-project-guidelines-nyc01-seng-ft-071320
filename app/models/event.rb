@@ -3,16 +3,10 @@ class Event < ActiveRecord::Base
     has_many :event_users
     has_many :users, through: :event_users
 
-
-
     def self.find_by_city(city, date)
-        # a = ENV["data"]
-        # api_data = RestClient.get(a)
-        # event_data = JSON.parse(api_data)
         event_by_city = Event.all.select do |event|
             (event.city == city) && (event.date.strftime("%F") == date)
         end
-
     end
 
     def self.search
@@ -22,5 +16,4 @@ class Event < ActiveRecord::Base
             date = gets.chomp
         Event.find_by_city(city, date)
     end
-
 end
