@@ -1,4 +1,5 @@
 require 'pry'
+require "pp"
 
 class CLI
 
@@ -12,7 +13,7 @@ class CLI
             end
             self.main_functions(user)
         elsif choice == "2"
-            p user.events
+            p PP.pp(user.events)
             self.main_functions(user)
         elsif choice == "9999"
             puts "Thank you, come again!"
