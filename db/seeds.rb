@@ -30,8 +30,16 @@ api_data = RestClient.get(a)
 event_data = JSON.parse(api_data)
 
 events = event_data["_embedded"]["events"].select do |event|
-event["dates"]["start"]["localDate"] == "2021-09-10" && event["_embedded"]["venues"][0]["city"]["name"] == "Flushing"
+    event["_embedded"]["venues"][0]["city"]["name"] == "Flushing"
+# event["dates"]["start"]["localDate"] == "2021-09-10" && 
 end
+
+names = events.map {|event| event["name"]}
+
+cities = event_data["_embedded"]["events"].map do |event|
+    event["_embedded"]["venues"][0]["city"]["name"]
+end.uniq
+
 binding.pry
 
 # while event_data
