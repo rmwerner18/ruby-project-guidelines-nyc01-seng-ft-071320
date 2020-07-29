@@ -58,4 +58,11 @@ class User < ActiveRecord::Base
             puts 'too bad'
         end
     end
+
+    def self.show_choices
+        puts "What would you like to do? (enter number)"
+        puts "1: Search events by city and date"
+        puts "2: View MyEvents"
+        puts "9999: Exit"
+    end
 end
