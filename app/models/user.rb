@@ -57,6 +57,30 @@ class User < ActiveRecord::Base
         end
     end
 
+    def find_event_by_name_and_date(name, date)
+        self.events.all.find do |event|
+            (event.name == name) && (event.date.strftime("%F") == date)
+        end
+    end
+
+    def delete_event_by_name_and_date
+        puts "Enter the name of the event you would like to delete"
+        name = gets.chomp
+        puts "Enter the date of the event you would like to delete"
+        date = gets.chomp
+        event_to_delete = self.find_event_by_name_and_date(name, date)
+        if event_to_delete 
+            self.events.delete(event_to_delete)
+            puts "This event has been deleted!"
+        else puts "Could not find an event with that name and date"
+            puts "Would you like to delete any events from MyEvents? (yes/no)"
+            response = gets.chomp
+            if response == "yes"
+                self.delete_event_by_name_and_date
+            end
+        end
+    end
+
     # def exit?
     #     puts "Would you like to exit? (yes/no)"
     #     response = gets.chomp
@@ -71,7 +95,8 @@ class User < ActiveRecord::Base
         puts "What would you like to do? (enter number)"
         puts "1: Search events by city and date"
         puts "2: Search events by city and name"
-        puts "3: View MyEvents"
+        puts "3: Search events by venue"
+        puts "4: View MyEvents"
         puts "9999: Exit"
     end
 end

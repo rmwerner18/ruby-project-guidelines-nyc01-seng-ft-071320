@@ -33,4 +33,5 @@ class Event < ActiveRecord::Base
         p event
     end
 
+
 end
