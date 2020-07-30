@@ -9,21 +9,26 @@ User.delete_all
 EventUser.delete_all
 Venue.delete_all
 
-# b = ENV["venue_data"]
+b = ENV["venue_data"]
 
-# venue_api_data = RestClient.get(b)
-# venue_info = JSON.parse(venue_api_data)
+ryan_api_key = ENV["ryans_api"]
+karan_api_key = ENV["karans_api"]
+venue_api_data = RestClient.get(b)
+venue_info = JSON.parse(venue_api_data)
 
-# venues = venue_info["_embedded"]["venues"].each do |venue_array|
-#     Venue.create(name: venue_array["name"],
-#     city: venue_array["city"]["name"],
-#     address: venue_array["address"]["line1"])
-# end
+count = 0 
+while Venue.all.length < 900 do
+    venue_info["_embedded"]["venues"].each do |venue_array|
+        Venue.create(name: venue_array["name"],
+        city: venue_array["city"]["name"],
+        address: venue_array["address"]["line1"])
+    end
+    venue_info = JSON.parse(RestClient.get("https://app.ticketmaster.com/discovery/v2/venues?&locale=*&stateCode=NY&page=#{count}" + "#{karan_api_key}"))
+    count += 1
+end
 
 
 a = ENV["data"]
-ryan_api_key = ENV["ryans_api"]
-karan_api_key = ENV["karans_api"]
 
 
 api_data = RestClient.get(a)
