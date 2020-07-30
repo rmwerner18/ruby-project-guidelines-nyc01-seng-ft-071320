@@ -14,8 +14,14 @@ class User < ActiveRecord::Base
         puts "What is your password"
         password = gets.chomp
         if action == "sign up"
-            user = User.create(first_name: first_name, last_name: last_name, password: password)
-        elsif action == "log in"
+            account = User.find_by(first_name: first_name, last_name: last_name, password: password)
+            if account
+                puts "This account already exists, please login"
+                User.login_or_create
+            else 
+                user = User.create(first_name: first_name, last_name: last_name, password: password)
+            end
+       elsif action == "log in"
             user = User.find_by(first_name: first_name, last_name: last_name, password: password)
         end
     end
@@ -51,15 +57,15 @@ class User < ActiveRecord::Base
         end
     end
 
-    def exit?
-        puts "Would you like to exit? (yes/no)"
-        response = gets.chomp
-        if response == "yes"
-            puts "Thank you, come again!"
-        elsif response == "no"
-            puts 'too bad'
-        end
-    end
+    # def exit?
+    #     puts "Would you like to exit? (yes/no)"
+    #     response = gets.chomp
+    #     if response == "yes"
+    #         puts "Thank you, come again!"
+    #     elsif response == "no"
+    #         puts 'too bad'
+    #     end
+    # end
 
     def self.show_choices
         puts "What would you like to do? (enter number)"
