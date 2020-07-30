@@ -40,7 +40,7 @@ while Event.all.length < 900 do
     Event.create(name: event["name"],
     date: event["dates"]["start"]["localDate"],
     # genre: event["classifications"][0]["genre"]["name"],
-    city: event["_embedded"]["venues"][0]["city"]["name"])
+    city: event["_embedded"]["venues"][0]["city"]["name"],
     # venue_id: Venue.find_by(name: event["_embedded"]["venues"][0]["name"]).id)
     end
     event_data = JSON.parse(RestClient.get("https://app.ticketmaster.com/discovery/v2/events?keyword=%22Music%22&locale=*&startDateTime=2020-08-01T00:00:00Z&endDateTime=2020-12-31T00:00:00Z&countryCode=US&stateCode=NY&page=#{count}" + "#{karan_api_key}"))
