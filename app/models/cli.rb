@@ -16,15 +16,15 @@ class CLI
             searched_events = Event.search_by_city_and_name
             PP.pp(searched_events)
             if searched_events
-                user.add_from_searched_events?(searched_events)
-                # puts "Would you like to add any of these events to MyEvents? (yes/no)"
-                # response = gets.chomp
-                # if response == "yes"
-                #     puts "Select a date (yyyy-mm-dd)"
-                #     chosen_date = gets.chomp
-                #     chosen_event = searched_events.where {:date.strftime("%F") == chosen_date}
-                #     user.add_to_my_events(chosen_event)
-            binding.pry
+                puts "Would you like to add any of these events to MyEvents? (yes/no)"
+                response = gets.chomp
+                if response == "yes"
+                    puts "Select the date of the event you would like to add (yyyy-mm-dd)"
+                    chosen_date = gets.chomp
+                    chosen_event = searched_events.find {|event| event.date.strftime("%F") == chosen_date}
+                    user.add_to_my_events(chosen_event)
+                    puts "The event has been added!"
+                end
             end
             self.main_functions(user)
         elsif choice == "3"
