@@ -48,8 +48,21 @@ class CLI
             end
             self.main_functions(user)
         elsif choice == "4"
-            p PP.pp(user.events)
+            names_and_dates = user.events.map {|event| "#{event.name}, #{event.date}"}
+            p PP.pp(names_and_dates)
             if user.events.any?
+                puts "Would you like to see more information for any of these events? (yes/no)"
+                response = gets.chomp
+                if response == "yes"
+                    puts "Please enter the name and date of the event (name, yyyy-mm-dd)"
+                    name_and_date = gets.chomp
+                    name = name_and_date.split(", ")[0]
+                    date = name_and_date.split(", ")[1]
+                    event = user.find_event_by_name_and_date(name, date)
+                    venue = Venue.all.find {|venue| venue.id == event.venue_id}
+                    p event
+                    p venue
+                end
                 puts "Would you like to delete any events from MyEvents? (yes/no)"
                 response = gets.chomp
                 if response == "yes"
