@@ -1,3 +1,38 @@
+INSTRUCTIONS
+1. Start the app by running 'ruby bin/run.rb' in the terminal.
+2. Create an account by entering 'sign up', then answering the prompts.
+3. You will be taken to the main menu. Choose an option by typing the number of that option.
+
+  3a. Enter '1' to search an event by city and date; 
+    -when prompted, use this this format '<city>, <yyyy-dd-mm>'
+    -A list of events will appear, if any match your criteria.
+      -you can choose an event from this list by name, and add it to your 'MyEvents' list
+
+  3b. Enter '2' to search an event by city and name; 
+    -when prompted, use this this format '<city>, <name_of_event>'
+      -A list of events will appear, if any match your criteria.
+      -you can choose an event from this list by date, and add it to your 'MyEvents' list
+
+  3c. Enter '3' to search an event by venue name
+    -you can choose an event from this list by date, and add it to your 'MyEvents' list
+
+  3d. Enter '4' to see a list of MyEvents.
+    -from here you can choose one of three options:
+      -Enter '1' to view more information about an event, which you will specify by:
+        '<name_of_event>, <yyyy-dd-mm>'
+      -Enter '2' to delete an event from MyEvents. This event will also be specified by:
+        '<name_of_event>, <yyyy-dd-mm>'
+      -Enter '3' to return to the main menu
+      
+  3e. Enter 9999 to exit the app.
+
+
+
+*at any time, exit by pressing 'control + C'
+  
+
+
+______________________________________________________________________________________________________
 # Module One Final Project Guidelines
 
 Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
