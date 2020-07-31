@@ -68,35 +68,18 @@ class User < ActiveRecord::Base
         end
     end
 
-    def find_event_by_name_and_date(name, date)
-        self.events.all.find do |event|
-            (event.name == name) && (event.date.strftime("%F") == date)
-        end
-    end
-
     def delete_event_by_name_and_date
         puts "Enter the name and date of the event you would like to delete (name, yyyy-mm-dd)"
         name_and_date = gets.chomp
         name = name_and_date.split(", ")[0]
         date = name_and_date.split(", ")[1]
-        event_to_delete = self.find_event_by_name_and_date(name, date)
-        if event_to_delete 
+        event_to_delete = Event.find_event_by_name_and_date(name, date)
+        if event_to_delete
             self.events.delete(event_to_delete)
             puts "#{event_to_delete.name}, #{event_to_delete.date} has been deleted!"
-        else puts "Could not find an event with that name and date"
-            User.choice_4_options
+        else puts "Could not find an event with that name and date" 
         end
     end
-
-    # def exit?
-    #     puts "Would you like to exit? (yes/no)"
-    #     response = gets.chomp
-    #     if response == "yes"
-    #         puts "Thank you, come again!"
-    #     elsif response == "no"
-    #         puts 'too bad'
-    #     end
-    # end
 
     def self.show_choices
         puts "What would you like to do? (enter number)"
@@ -126,19 +109,14 @@ class User < ActiveRecord::Base
         }
     end
 
-    def self.choice_4_main_functions(user)
-        puts "MyEvents:"
-        names_and_dates = user.events.map {|event| "#{event.name}, #{event.date}"}
-        p PP.pp(names_and_dates)
-        if user.events.any?
-            User.choice_4_options
+    def self.choice_4_loop(user)
             response = gets.chomp
             if response == "1"
                 puts "Please enter the name and date of the event (name, yyyy-mm-dd)"
                 name_and_date = gets.chomp
                 name = name_and_date.split(", ")[0]
                 date = name_and_date.split(", ")[1]
-                event = user.find_event_by_name_and_date(name, date)
+                event = Event.find_event_by_name_and_date(name, date)
                 if event
                     venue = Venue.all.find {|venue| venue.id == event.venue_id}
                     info_hash = User.turn_into_hash(venue, event)
@@ -153,7 +131,18 @@ class User < ActiveRecord::Base
                     User.choice_4_main_functions(user)
                 end
             elsif response == "3"
+            else puts "Please select a valid response"
+                User.choice_4_loop(user)
             end
+        end
+
+    def self.choice_4_main_functions(user)
+        puts "MyEvents:"
+        names_and_dates = user.events.map {|event| "#{event.name}, #{event.date}"}
+        p PP.pp(names_and_dates)
+        if user.events.any?
+            User.choice_4_options
+            User.choice_4_loop(user)
         else puts "You have no events"
         end
     end
@@ -163,15 +152,35 @@ class User < ActiveRecord::Base
         response = gets.chomp
         if response == "yes"
             puts "Select the date of the event you would like to add (yyyy-mm-dd)"
-            chosen_date = gets.chomp
-            chosen_event = venue.events.find {|event| event.date.strftime("%F") == chosen_date}
-            user.add_to_my_events(chosen_event)
-            puts "The event has been added!"
+            User.select_event_from_searched_events(venue.events, user)
         elsif response == "no"
             CLI.main_functions(user)
         else puts "Please enter a valid response"
-            User.choice_3_add_event?(user)
+            User.choice_3_add_event?(venue, user)
         end 
+    end
+    def self.choice_2_add_event?(searched_events, user)
+        puts "Would you like to add any of these events to MyEvents? (yes/no)"
+        response = gets.chomp
+        if response == "yes"
+            puts "Select the date of the event you would like to add (yyyy-mm-dd)"
+            User.select_event_from_searched_events(searched_events, user)
+        elsif response == "no" 
+            CLI.main_functions(user)
+        else puts "Please enter a valid response"            
+            User.choice_2_add_event?(searched_events, user)           
+        end
+    end
+    def self.choice_1_add_event?(searched_events, user)
+        puts "Would you like to add any of these events to MyEvents? (yes/no)"
+        response = gets.chomp
+        if response == "yes"
+            puts "Select the name of the event you would like to add"
+            User.select_event_from_searched_events(searched_events, user)
+        elsif response == "no"
+        else puts "Please enter a valid response" 
+            User.choice_1_add_event?(searched_events, user)
+        end
     end
 
     def self.choice_3_main_functions(user)
@@ -180,32 +189,34 @@ class User < ActiveRecord::Base
         venue = Venue.all.find {|venue| venue.name == venue_name}
         if venue
             p PP.pp(venue.events)
-            User.choice_3_add_event?(venue, user)
+            if venue.events.any?
+                User.choice_3_add_event?(venue, user)
+            else puts "There are no events at that venue"
+            end
         else puts "Could not find that venue"
         end
     end
-
-    def self.choice_2_add_event?(searched_events, user)
-        puts "Would you like to add any of these events to MyEvents? (yes/no)"
-        response = gets.chomp
-        if response == "yes"
-            puts "Select the date of the event you would like to add (yyyy-mm-dd)"
-            chosen_date = gets.chomp
-            chosen_event = searched_events.find {|event| event.date.strftime("%F") == chosen_date}
+    
+    def self.select_event_from_searched_events(searched_events, user)
+        attribute = gets.chomp
+        name = searched_events.find {|event| event.name == attribute}
+        date = searched_events.find {|event| event.date.strftime("%F") == attribute}
+        if name || date
+            chosen_event = name ? name : date
             user.add_to_my_events(chosen_event)
-            puts "The event has been added!"
-        elsif response == "no" 
-            CLI.main_functions(user)
-        else puts "Please enter a valid response"            
-            User.choice_2_add_event?(searched_events, user)           
+            puts "#{chosen_event.name}, #{chosen_event.date} has been added to MyEvents"
+        else puts "Could not find event"
+            puts "Please specify again"
+            User.select_event_from_searched_events(searched_events, user)
         end
     end
+
      
     def self.choice_2_main_functions(user)
         searched_events = Event.search_by_city_and_name
         PP.pp(searched_events)
         if searched_events.any?
-            self.choice_2_add_event?(searched_events, user)
+            User.choice_2_add_event?(searched_events, user)
         else puts "Could not find any events in that city with that name"
         end
     end
@@ -214,16 +225,27 @@ class User < ActiveRecord::Base
         searched_events = Event.search_by_city_and_date
         PP.pp(searched_events)
         if searched_events.any?
-            puts "Would you like to add any of these events to MyEvents? (yes/no)"
-            response = gets.chomp
-            if response == "yes"
-                puts "Select the name of the event you would like to add"
-                chosen_name = gets.chomp
-                chosen_event = searched_events.find {|event| event.name == chosen_name}
-                user.add_to_my_events(chosen_event)
-                puts "The event has been added!"
-            end
+            User.choice_1_add_event?(searched_events, user)
         else puts "Could not find an event on that date in that city"
         end
     end
 end
+
+# puts "Select the date of the event you would like to add (yyyy-mm-dd)"
+# chosen_date = gets.chomp
+# chosen_event = searched_events.find {|event| event.date.strftime("%F") == chosen_date}
+# user.add_to_my_events(chosen_event)
+# puts "The event has been added!"
+
+# puts "Select the name of the event you would like to add"
+# chosen_name = gets.chomp
+# chosen_event = searched_events.find {|event| event.name == chosen_name}
+# user.add_to_my_events(chosen_event)
+# puts "The event has been added!"
+
+
+
+
+
+
+

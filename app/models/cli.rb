@@ -27,7 +27,7 @@ class CLI
      end
 
     def start
-        puts "Welcome to our app!"
+        puts "Welcome to the New York Show Search App!"
         user = User.login_or_create
         CLI.main_functions(user)                  
     end

@@ -46,45 +46,7 @@ while Event.all.length < 900 do
 end
 
 
-# next_one = event_data["_links"]["next"]["href"]
 
-# request = "https://app.ticketmaster.com" + "#{event_data["_links"]["next"]["href"]}" + "#{karan_api_key}"
-
-
-
-
-    # event_data = event_data["_links"]["next"]["href"] ? JSON.parse(RestClient.get("https://app.ticketmaster.com" + "#{event_data["_links"]["next"]["href"]}" + "#{karan_api_key}")) : nil
-
-
-
-#     event_data = event_data["_links"]["next"]["href"] ? JSON.parse(RestClient.get("https://app.ticketmaster.com" + "#{event_data["_links"]["next"]["href"]}" + "#{karan_api_key}")) : nil
-# end
-
-# events = event_data.each do |event_hash|
-#     event = Event.create(name: event_hash["name"], 
-#     date: event_hash["dates"]["start"]["localDate"],
-#     genre: event_hash["classifications"][0]["genre"]["name"],
-#     city: event_hash["_embedded"]["venues"][0]["city"]["name"],
-#     venue_id: Venue.find_by(name: event_hash["_embedded"]["venues"][0]["name"]).id)
-# end
-
-
-
-# narrowed_search = event_data["_embedded"]["events"].select do |event_hash|
-#     event_hash["_embedded"]["venues"][0]["state"]["name"] == "New York"
-# end
-
-# event_by_date = event_data["_embedded"]["events"].select do |event_hash|
-#     event_hash["dates"]["start"]["localDate"] == date
-# end
-
-# event_by_state = event_data["_embedded"]["events"].select do |event_hash|
-#     event_hash["_embedded"]["venues"][0]["state"]["name"] == "New Jersey"
-# end
-
-# event_by_city = event_data["_embedded"]["events"].select do |event_hash|
-#     event_hash["_embedded"]["venues"][0]["city"]["name"] == "New Jersey"
-# end
 
 
 

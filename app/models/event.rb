@@ -15,6 +15,31 @@ class Event < ActiveRecord::Base
         end
     end
 
+    def self.find_event_by_name_and_date(name, date)
+        Event.all.find do |event|
+            (event.name == name) && (event.date.strftime("%F") == date)
+        end
+    end
+
+    # def self.find_event_with_two_parameters(one, two)
+    #     is_one_a_city = Event.all.find {|event| event.city == one}
+    #     is_two_a_name = Event.all.find {|event| event.name == two}
+    #     method_one = is_one_a_city ? event.city : event.name 
+    #     method_two = is_two_a_name ? event.name : event.date.strftime("%F")
+    #     Event.all.select do |event|
+    #         (event.method_one == one) && (event.method_two == two)
+    #     end
+    # end
+
+    # def self.split_input
+    #     one_and_two = gets.chomp
+    #     one = one_and_two.split(", ")[0]
+    #     two = one_and_two.split(", ")[1]
+    #     event = Event.find_by_city_and_date(one, two)
+    #     p event
+    # end
+
+
     def self.search_by_city_and_date
         puts "Please specify a city and a date (city, yyyy-mm-dd)"
         city_and_date = gets.chomp
@@ -32,6 +57,4 @@ class Event < ActiveRecord::Base
         event = Event.find_by_city_and_name(city, name)
         p event
     end
-
-
 end
