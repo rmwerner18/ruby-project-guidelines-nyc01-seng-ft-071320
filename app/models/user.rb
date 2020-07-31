@@ -154,7 +154,6 @@ class User < ActiveRecord::Base
             puts "Select the date of the event you would like to add (yyyy-mm-dd)"
             User.select_event_from_searched_events(venue.events, user)
         elsif response == "no"
-            CLI.main_functions(user)
         else puts "Please enter a valid response"
             User.choice_3_add_event?(venue, user)
         end 
@@ -166,7 +165,6 @@ class User < ActiveRecord::Base
             puts "Select the date of the event you would like to add (yyyy-mm-dd)"
             User.select_event_from_searched_events(searched_events, user)
         elsif response == "no" 
-            CLI.main_functions(user)
         else puts "Please enter a valid response"            
             User.choice_2_add_event?(searched_events, user)           
         end
